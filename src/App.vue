@@ -1,17 +1,31 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <top></top>
+    <Button></Button>
   </div>
 </template>
 
 <script>
-import top from './components/top.vue'
+import Button from './components/button.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    top
+    Button
+  },
+  created() {
+    let res = this
+    axios.get('https://jsonplaceholder.typicode.com/todos', {
+      params: {
+        userId: '1'
+      }
+    }).then(res => {
+      res.todos = res.data
+    }).catch(err => {
+      console.error('error');
+      res.error = err
+    })
   }
 }
 </script>

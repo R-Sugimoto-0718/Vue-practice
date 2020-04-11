@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="top-text">{{greeting}}</div>
-    <input v-model="greeting">
+    <div v-if="greeting" class="top-text">{{greeting}}</div>
   </div>
 </template>
 
