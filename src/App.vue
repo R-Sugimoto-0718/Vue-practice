@@ -1,33 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Button></Button>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <div v-for="(todo, index) in todos" :key="index.id">
+      <h1>{{ todo.id }}</h1>
+      <h1>user_id is :{{ todo.id }}</h1>
+      <h2>title is: {{ todo.title }}</h2>
+    </div>
+    <button @click="clickButton()">ボタン</button>
   </div>
 </template>
 
 <script>
-import Button from './components/button.vue'
-import axios from 'axios'
+import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
-  components: {
-    Button
+  name: "App",
+  data: function() {
+    return {
+      todos: [],
+    };
   },
-  created() {
-    let res = this
-    axios.get('https://jsonplaceholder.typicode.com/todos', {
-      params: {
-        userId: '1'
-      }
-    }).then(res => {
-      res.todos = res.data
-    }).catch(err => {
-      console.error('error');
-      res.error = err
-    })
-  }
-}
+  mounted() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos", {
+        params: {
+          userId: "1",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.$store.dispatch("fetchTodoData", res.data);
+        res.todos = res.data;
+      })
+      .catch((err) => {
+        console.error("error is ", err);
+      });
+  },
+  methods: {
+    clickButton() {
+      console.log(this.fetchData, "00000");
+      this.todos = this.fetchData;
+      console.log("clicled!!");
+    },
+  },
+  computed: {
+    ...mapGetters(["fetchData"]),
+  },
+};
 </script>
 
 <style>
